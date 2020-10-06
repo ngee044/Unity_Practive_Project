@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Actor
 {
     public enum State
     {
@@ -27,20 +27,35 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float CurrentSpeed;
 
+    [SerializeField]
+    Transform FireTransform;
+
+    [SerializeField]
+    GameObject Bullet;
+
+    [SerializeField]
+    float BulletSpeed = 1;
+
     Vector3 CurrentVelocity;
 
     float MoveStartTime = 0.0f;
-    float BattleStartTime = 0.0f;
+    //float BattleStartTime = 0.0f;
+    float LastBattleUpdateTime = 0.0f;
 
+    [SerializeField]
+    int FireRemainCount = 1;
+
+    [SerializeField]
+    int GamePoint = 10;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Initialize()
     {
-
+        base.Initialize();
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void UpdateActor()
     {
         switch(CurrentState)
         {
@@ -63,9 +78,19 @@ public class Enemy : MonoBehaviour
 
     private void UpdateBattle()
     {
-        if(Time.time - BattleStartTime >= Mathf.Abs(3.0f))
+        if(Time.time - LastBattleUpdateTime >= Mathf.Abs(1.0f))
         {
-            Disappear(new Vector3(-15.0f, transform.position.y, transform.position.z));
+            if (FireRemainCount > 0)
+            {
+                Fire();
+                FireRemainCount--;
+            }
+            else
+            {
+                Disappear(new Vector3(-15.0f, transform.position.y, transform.position.z));
+            }
+
+            LastBattleUpdateTime = Time.time;
         }
     }
 
@@ -107,7 +132,7 @@ public class Enemy : MonoBehaviour
         TargetPosition = targetPose;
         CurrentSpeed = MaxSpeed;
 
-        BattleStartTime = Time.time;
+        LastBattleUpdateTime = Time.time;
 
         CurrentState = State.Appear;
         MoveStartTime = Time.time;
@@ -134,6 +159,24 @@ public class Enemy : MonoBehaviour
     public void OnCrash(Player player)
     {
         Debug.Log("Player OnCrash");
+    }
+
+    public void Fire()
+    {
+        GameObject go = Instantiate(Bullet);
+
+        //Debug.Log(FireTransform.position);
+
+        Bullet bullet = go.GetComponent<Bullet>();
+        bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed, Damage);
+
+    }
+
+    protected override void OnDead(Actor killer)
+    {
+        base.OnDead(killer);
+        SystemManager.Instance.GamePointAccumulator.Accumulate(GamePoint);
+        CurrentState = State.Dead;
     }
 }
 

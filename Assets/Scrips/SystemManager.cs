@@ -5,12 +5,43 @@ using UnityEngine;
 public class SystemManager : MonoBehaviour
 {
     static SystemManager instance = null;
-
     public static SystemManager Instance
     {
         get
         {
             return instance;
+        }
+    }
+
+    [SerializeField]
+    Player player;
+
+    GamePointAccumulator gamePointAccumulator = new GamePointAccumulator();
+
+    [SerializeField]
+    EffectManager efftectManager;
+
+    public Player Hero
+    {
+        get
+        {
+            return player;
+        }
+    }
+
+    public GamePointAccumulator GamePointAccumulator
+    {
+        get
+        {
+            return gamePointAccumulator;
+        }
+    }
+
+    public EffectManager EffectManager
+    {
+        get
+        {
+            return efftectManager;
         }
     }
 
@@ -24,18 +55,11 @@ public class SystemManager : MonoBehaviour
         }
 
         instance = this;
+
+        //Scene 이동간에 사라지지 않도록 처리
+        DontDestroyOnLoad(this.gameObject);
     }
     //
-    [SerializeField]
-    Player player;
-
-    public Player Hero
-    {
-        get
-        {
-            return player;
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
