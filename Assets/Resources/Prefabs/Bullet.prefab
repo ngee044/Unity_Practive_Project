@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveDirection: {x: 0, y: 0, z: 0}
   Speed: 0
+  Damage: 1
 --- !u!54 &4803719328658330277
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -74,7 +75,7 @@ GameObject:
   - component: {fileID: 5753356349584169897}
   - component: {fileID: 2173191977092237464}
   - component: {fileID: 4656940372278879158}
-  - component: {fileID: 1079843088098545118}
+  - component: {fileID: 8250649710437118530}
   m_Layer: 11
   m_Name: BulletModel
   m_TagString: Untagged
@@ -143,7 +144,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &1079843088098545118
+--- !u!136 &8250649710437118530
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,6 +155,6 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 0.95
+  m_Height: 0.66491365
   m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.18254325, y: 0, z: 0}

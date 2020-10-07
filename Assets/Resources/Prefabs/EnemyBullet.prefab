@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5499169172841224870}
   - component: {fileID: -5202319016205254806}
   - component: {fileID: 2082474805652588157}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveDirection: {x: 0, y: 0, z: 0}
   Speed: 0
+  Damage: 1
 --- !u!54 &2082474805652588157
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,7 +76,7 @@ GameObject:
   - component: {fileID: 2173191977092237464}
   - component: {fileID: 4656940372278879158}
   - component: {fileID: 1079843088098545118}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: BulletModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

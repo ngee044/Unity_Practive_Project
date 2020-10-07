@@ -91,13 +91,15 @@ public class Player : Actor
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy)
         {
-            enemy.OnCrash(this);
+            if(!enemy.IsDead)
+                enemy.OnCrash(this, crashDamage);
         }
     }
 
-    public void OnCrash(Enemy enermy)
+    public override void OnCrash(Actor enermy, int damage)
     {
-        Debug.Log("enermy OnCrash");
+        base.OnCrash(enermy, damage);
+        Debug.Log("player to enermy OnCrash");
     }
 
     public void Fire()
@@ -107,14 +109,15 @@ public class Player : Actor
         //Debug.Log(FireTransform.position);
 
         Bullet bullet = go.GetComponent<Bullet>();
-        bullet.Fire(OwnerSide.Player, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
 
     }
 
-    protected virtual void OnDead(Actor killer)
+    protected override void OnDead(Actor killer)
     {
         base.OnDead(killer);
         SystemManager.Instance.GamePointAccumulator.Reset();
         Debug.Log("Game Over");
+        gameObject.SetActive(false);
     }
 }

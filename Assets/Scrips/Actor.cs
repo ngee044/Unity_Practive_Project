@@ -5,7 +5,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour
 {
     [SerializeField]
-    protected int MaxHp = 100;
+    protected int MaxHp = 3;
 
     [SerializeField]
     protected int CurrentHp;
@@ -88,6 +88,6 @@ public class Actor : MonoBehaviour
         isDead = true;
         Debug.Log("OnDead() killer = " + killer.name);
 
-        //Destroy(this.gameObject);
+        SystemManager.Instance.EffectManager.GenerateEffect(1, transform.position);
     }
 }

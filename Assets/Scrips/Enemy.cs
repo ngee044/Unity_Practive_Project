@@ -43,7 +43,7 @@ public class Enemy : Actor
     float LastBattleUpdateTime = 0.0f;
 
     [SerializeField]
-    int FireRemainCount = 1;
+    int FireRemainCount = 3;
 
     [SerializeField]
     int GamePoint = 10;
@@ -57,6 +57,7 @@ public class Enemy : Actor
     // Update is called once per frame
     protected override void UpdateActor()
     {
+        base.UpdateActor();
         switch(CurrentState)
         {
             case State.None:
@@ -73,12 +74,14 @@ public class Enemy : Actor
             case State.Battle:
                 UpdateBattle();
                 break;
+            default:
+                break;
         }
     }
 
     private void UpdateBattle()
     {
-        if(Time.time - LastBattleUpdateTime >= Mathf.Abs(1.0f))
+        if(Time.time - LastBattleUpdateTime > Mathf.Abs(3.0f))
         {
             if (FireRemainCount > 0)
             {
@@ -119,6 +122,7 @@ public class Enemy : Actor
         if(CurrentState == State.Appear)
         {
             CurrentState = State.Battle;
+            LastBattleUpdateTime = Time.time;
         }
         else //if (CurrentState == State.Disappear)
         {
@@ -152,13 +156,15 @@ public class Enemy : Actor
         Player player = other.GetComponentInParent<Player>();
         if(player)
         {
-            player.OnCrash(this);
+            if(!player.IsDead)
+            player.OnCrash(this, crashDamage);
         }
     }
 
-    public void OnCrash(Player player)
+    public override void OnCrash(Actor player, int damage)
     {
-        Debug.Log("Player OnCrash");
+        base.OnCrash(player, damage);
+        Debug.Log("Enumy to Player OnCrash");
     }
 
     public void Fire()
@@ -168,7 +174,7 @@ public class Enemy : Actor
         //Debug.Log(FireTransform.position);
 
         Bullet bullet = go.GetComponent<Bullet>();
-        bullet.Fire(OwnerSide.Enemy, FireTransform.position, -FireTransform.right, BulletSpeed, Damage);
+        bullet.Fire(this, FireTransform.position, -FireTransform.right, BulletSpeed, Damage);
 
     }
 
@@ -177,6 +183,7 @@ public class Enemy : Actor
         base.OnDead(killer);
         SystemManager.Instance.GamePointAccumulator.Accumulate(GamePoint);
         CurrentState = State.Dead;
+        Destroy(this.gameObject);
     }
 }
 

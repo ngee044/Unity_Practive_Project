@@ -12,7 +12,6 @@ public class Bullet : MonoBehaviour
 {
     const float LifeTime = 15.0f;
 
-    OwnerSide ownerSide = OwnerSide.Player;
 
     [SerializeField]
     Vector3 MoveDirection = Vector3.zero;
@@ -27,6 +26,8 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     int Damage = 1;
+
+    Actor Owner;
 
     // Start is called before the first frame update
     void Start()
@@ -54,14 +55,15 @@ public class Bullet : MonoBehaviour
         this.transform.position += moveVector;
     }
 
-    public void Fire(OwnerSide FireOwner, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    public void Fire(Actor FireOwner, Vector3 firePosition, Vector3 direction, float speed, int damage)
     {
-        ownerSide = FireOwner;
+        Owner = FireOwner;
         this.transform.position = firePosition;
         MoveDirection = direction;
         Speed = speed;
         Damage = damage;
 
+        FiredTime = Time.time;
         NeedMove = true;
     }
 
@@ -83,55 +85,43 @@ public class Bullet : MonoBehaviour
         if (Hited)
             return;
 
-        if(collider.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")
+        if (collider.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")
             || collider.gameObject.layer == LayerMask.NameToLayer("PlayerBullet"))
         {
             return;
         }
 
-        if (ownerSide == OwnerSide.Player)
-        {
-            Enemy enemy = collider.GetComponentInParent<Enemy>();
-            if (enemy.IsDead)
-                return;
+        Actor actor = collider.GetComponentInParent<Actor>();
+        if (actor.IsDead && actor)
+            return;
 
-            enemy.OnBulletHited(enemy, Damage);
-        }
-        else
-        {
-            Player player = collider.GetComponentInParent<Player>();
-            if (player.IsDead)
-                return;
-
-            player.OnBulletHited(player, Damage);
-        }
-
+        actor.OnBulletHited(Owner, Damage);
         Collider myCollider = GetComponentInChildren<Collider>();
         myCollider.enabled = false;
 
         Hited = true;
         NeedMove = false;
+
+        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(0, transform.position);
+        go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        Disapper();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("bullet collision pos = " + other.transform.position);
         OnBulletCollision(other);
     }
 
     bool ProcessDisapperCondition()
     {
         if (this.transform.position.x > 15.0f || this.transform.position.x < -15.0f
-            || this.transform.position.y > 15.0f || this.transform.position.y < -15.0f            )
-        {
-            Disapper();   
-            return true;
-        }
-        else if(Time.time - FiredTime > LifeTime)
+            || this.transform.position.y > 15.0f || this.transform.position.y < -15.0f)
         {
             Disapper();
             return true;
         }
-        else if(Speed == 0)
+        else if (Time.time - FiredTime > LifeTime)
         {
             Disapper();
             return true;
