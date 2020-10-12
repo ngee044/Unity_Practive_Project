@@ -16,10 +16,35 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     Player player;
 
-    GamePointAccumulator gamePointAccumulator = new GamePointAccumulator();
+    
 
     [SerializeField]
     EffectManager efftectManager;
+
+    [SerializeField]
+    EnemyManager enemyManager;
+
+    [SerializeField]
+    BulletManager bulletManager;
+
+    [SerializeField]
+    PrefabCacheSystem enemyCacheSystem = new PrefabCacheSystem();
+
+    [SerializeField]
+    PrefabCacheSystem bulletCacheSystem = new PrefabCacheSystem();
+
+    [SerializeField]
+    PrefabCacheSystem effectCacheSystem = new PrefabCacheSystem();
+
+    public EnemyManager EnemyManager
+    {
+        get { return enemyManager; }
+    }
+
+    public BulletManager BulletManager
+    {
+        get { return bulletManager; }
+    }
 
     public Player Hero
     {
@@ -29,6 +54,7 @@ public class SystemManager : MonoBehaviour
         }
     }
 
+    GamePointAccumulator gamePointAccumulator = new GamePointAccumulator();
     public GamePointAccumulator GamePointAccumulator
     {
         get
@@ -42,6 +68,30 @@ public class SystemManager : MonoBehaviour
         get
         {
             return efftectManager;
+        }
+    }
+
+    public PrefabCacheSystem EnemyCacheSystem
+    {
+        get
+        {
+            return enemyCacheSystem;
+        }
+    }
+
+    public PrefabCacheSystem BulletCacheSystem
+    {
+        get
+        {
+            return bulletCacheSystem;
+        }
+    }
+
+    public PrefabCacheSystem EffectCacheSystem
+    {
+        get
+        {
+            return effectCacheSystem;
         }
     }
 

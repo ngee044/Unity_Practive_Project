@@ -88,6 +88,6 @@ public class Actor : MonoBehaviour
         isDead = true;
         Debug.Log("OnDead() killer = " + killer.name);
 
-        SystemManager.Instance.EffectManager.GenerateEffect(1, transform.position);
+        SystemManager.Instance.EffectManager.GenerateEffect(EffectManager.ActorDeadFxIndex, transform.position);
     }
 }

@@ -39,9 +39,9 @@ public class EnemyFactory : MonoBehaviour
             EnemyFileCache.Add(resourcePath, gobj);
         }
 
-        GameObject InstanceGameObject = Instantiate<GameObject>(gobj);
+        //GameObject InstanceGameObject = Instantiate<GameObject>(gobj);
 
-        return InstanceGameObject;
+        return gobj;
     }
 
 }

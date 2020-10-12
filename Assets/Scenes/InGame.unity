@@ -151,6 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyFactory: {fileID: 1650843053}
+  enemyFiles:
+  - filePath: Prefabs/Enemy
+    cacheCount: 10
 --- !u!4 &23985474
 Transform:
   m_ObjectHideFlags: 0
@@ -237,9 +240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d66d3cc548409e44962ef84d50bb1a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrefabs:
-  - {fileID: 100008, guid: 7075bd5fe1480184695a32611c15da57, type: 3}
-  - {fileID: 100014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
+  effectPrefabFiles:
+  - filePath: Prefabs/WFX_Explosion Simple
+    cacheCount: 30
+  - filePath: Prefabs/WFX_Explosion Small
+    cacheCount: 20
 --- !u!4 &263489653
 Transform:
   m_ObjectHideFlags: 0
@@ -464,6 +469,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1662301863}
   efftectManager: {fileID: 263489652}
+  enemyManager: {fileID: 23985473}
+  bulletManager: {fileID: 754443179}
 --- !u!4 &640968575
 Transform:
   m_ObjectHideFlags: 0
@@ -570,6 +577,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &754443178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754443180}
+  - component: {fileID: 754443179}
+  m_Layer: 0
+  m_Name: BulletManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &754443179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754443178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf9c608438765c468bee39dfdf33ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletFiles:
+  - filePath: Prefabs/Bullet
+    cacheCount: 20
+  - filePath: Prefabs/EnemyBullet
+    cacheCount: 30
+--- !u!4 &754443180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754443178}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,7 +1246,7 @@ PrefabInstance:
     - target: {fileID: 506799018599925540, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 811849005955905056, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
@@ -1201,7 +1256,7 @@ PrefabInstance:
     - target: {fileID: 1016861148198161574, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 1016861148198161574, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
@@ -1296,12 +1351,12 @@ PrefabInstance:
     - target: {fileID: 7057868118086862784, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7077081949140583173, guid: 3a403dadc445bd949a56f23ffe06d197,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a403dadc445bd949a56f23ffe06d197, type: 3}

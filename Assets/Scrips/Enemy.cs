@@ -48,6 +48,20 @@ public class Enemy : Actor
     [SerializeField]
     int GamePoint = 10;
 
+    private string filePath;
+
+    public string FilePath
+    {
+        set
+        {
+            filePath = value;
+        }
+        get
+        {
+            return filePath;
+        }
+    }
+    
     // Start is called before the first frame update
     protected override void Initialize()
     {
@@ -169,21 +183,23 @@ public class Enemy : Actor
 
     public void Fire()
     {
+#if false
         GameObject go = Instantiate(Bullet);
+        Bullet bullet = go.GetComponent<Bullet>();
 
         //Debug.Log(FireTransform.position);
-
-        Bullet bullet = go.GetComponent<Bullet>();
+#else
+        Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.EnemyBulletIndex);
         bullet.Fire(this, FireTransform.position, -FireTransform.right, BulletSpeed, Damage);
-
+#endif
     }
 
     protected override void OnDead(Actor killer)
     {
         base.OnDead(killer);
         SystemManager.Instance.GamePointAccumulator.Accumulate(GamePoint);
+        SystemManager.Instance.EnemyManager.RemoveEnemy(this);
         CurrentState = State.Dead;
-        Destroy(this.gameObject);
     }
 }
 

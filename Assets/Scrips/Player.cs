@@ -20,9 +20,6 @@ public class Player : Actor
     Transform FireTransform;
 
     [SerializeField]
-    GameObject Bullet;
-
-    [SerializeField]
     float BulletSpeed = 1;
 
     // Start is called before the first frame update
@@ -36,6 +33,7 @@ public class Player : Actor
     // Update is called once per frame
     protected override void UpdateActor()
     {
+        base.UpdateActor();
         if(moveVector.sqrMagnitude == 0)
         {
             return;
@@ -104,11 +102,12 @@ public class Player : Actor
 
     public void Fire()
     {
+#if false
         GameObject go = Instantiate(Bullet);
-
-        //Debug.Log(FireTransform.position);
-
         Bullet bullet = go.GetComponent<Bullet>();
+        //Debug.Log(FireTransform.position);
+#endif
+        Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.PlayerBulletIndex);
         bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
 
     }

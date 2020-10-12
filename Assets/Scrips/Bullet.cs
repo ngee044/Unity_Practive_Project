@@ -10,7 +10,7 @@ public enum OwnerSide : int
 
 public class Bullet : MonoBehaviour
 {
-    const float LifeTime = 15.0f;
+    const float LifeTime = 5.0f;
 
 
     [SerializeField]
@@ -28,6 +28,8 @@ public class Bullet : MonoBehaviour
     int Damage = 1;
 
     Actor Owner;
+
+    public string FilePath { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -102,7 +104,7 @@ public class Bullet : MonoBehaviour
         Hited = true;
         NeedMove = false;
 
-        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(0, transform.position);
+        GameObject go = SystemManager.Instance.EffectManager.GenerateEffect(EffectManager.BulletDisappearFxIndex, transform.position);
         go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
         Disapper();
     }
@@ -132,7 +134,7 @@ public class Bullet : MonoBehaviour
 
     void Disapper()
     {
-        Destroy(this.gameObject);
+        SystemManager.Instance.BulletManager.Remove(this);
     }
 
 }
