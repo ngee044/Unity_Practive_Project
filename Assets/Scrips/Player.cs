@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Actor
 {
@@ -26,6 +28,8 @@ public class Player : Actor
     protected override void Initialize()
     {
         base.Initialize();
+        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
+        playerStatePanel.SetHP(CurrentHp, MaxHp);
         if (Speed == 0)
             Speed = 0.5f;
     }
@@ -110,6 +114,13 @@ public class Player : Actor
         Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.PlayerBulletIndex);
         bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
 
+    }
+
+    protected override void DecreaseHP(Actor attacker, int value)
+    {
+        base.DecreaseHP(attacker, value);
+        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
+        playerStatePanel.SetHP(CurrentHp, MaxHp);
     }
 
     protected override void OnDead(Actor killer)

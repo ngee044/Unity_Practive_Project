@@ -15,6 +15,9 @@ public class GamePointAccumulator
     public void Accumulate(int value)
     {
         gamePoint += value;
+
+        PlayerStatePanel panel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
+        panel.SetScore(SystemManager.Instance.GamePointAccumulator.gamePoint);
     }
 
     public void Reset()

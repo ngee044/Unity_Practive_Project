@@ -198,6 +198,7 @@ public class Enemy : Actor
     {
         base.OnDead(killer);
         SystemManager.Instance.GamePointAccumulator.Accumulate(GamePoint);
+        
         SystemManager.Instance.EnemyManager.RemoveEnemy(this);
         CurrentState = State.Dead;
     }
