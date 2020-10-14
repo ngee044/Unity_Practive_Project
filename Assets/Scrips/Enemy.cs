@@ -170,14 +170,20 @@ public class Enemy : Actor
         Player player = other.GetComponentInParent<Player>();
         if(player)
         {
-            if(!player.IsDead)
-            player.OnCrash(this, crashDamage);
+            if (!player.IsDead)
+            {
+                BoxCollider box = ((BoxCollider)other);
+                Vector3 crashPos = player.transform.position + box.center;
+                crashPos.x += box.size.x * 0.5f;
+
+                player.OnCrash(this, crashDamage, crashPos);
+            }
         }
     }
 
-    public override void OnCrash(Actor player, int damage)
+    public override void OnCrash(Actor player, int damage, Vector3 crashPos)
     {
-        base.OnCrash(player, damage);
+        base.OnCrash(player, damage, crashPos);
         Debug.Log("Enumy to Player OnCrash");
     }
 
@@ -201,6 +207,13 @@ public class Enemy : Actor
         
         SystemManager.Instance.EnemyManager.RemoveEnemy(this);
         CurrentState = State.Dead;
+    }
+
+    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
+    {
+        base.DecreaseHP(attacker, value, damagePos);
+        Vector3 damagePoint = damagePos + UnityEngine.Random.insideUnitSphere * 0.5f;
+        SystemManager.Instance.DamageManager.Generate(DamageManager.EnemyDamageIndex, damagePoint, value, Color.magenta);
     }
 }
 

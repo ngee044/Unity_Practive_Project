@@ -38,7 +38,7 @@ public class Player : Actor
     protected override void UpdateActor()
     {
         base.UpdateActor();
-        if(moveVector.sqrMagnitude == 0)
+        if (moveVector.sqrMagnitude == 0)
         {
             return;
         }
@@ -64,7 +64,7 @@ public class Player : Actor
 
         res = boxCollider.transform.position + boxCollider.center + moveVector;
 
-        if(res.x - boxCollider.size.x * 0.5f < -MainBGQuadTransform.localScale.x * 0.5f)
+        if (res.x - boxCollider.size.x * 0.5f < -MainBGQuadTransform.localScale.x * 0.5f)
         {
             moveVector.x = 0;
         }
@@ -93,14 +93,20 @@ public class Player : Actor
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy)
         {
-            if(!enemy.IsDead)
-                enemy.OnCrash(this, crashDamage);
+            if (!enemy.IsDead)
+            {
+                BoxCollider box = (BoxCollider)other;
+                Vector3 crashPos = enemy.transform.position + box.center;
+                crashPos.x += box.size.x * 0.5f;
+
+                enemy.OnCrash(this, crashDamage, crashPos);
+            }
         }
     }
 
-    public override void OnCrash(Actor enermy, int damage)
+    public override void OnCrash(Actor enermy, int damage, Vector3 crashPos)
     {
-        base.OnCrash(enermy, damage);
+        base.OnCrash(enermy, damage, crashPos);
         Debug.Log("player to enermy OnCrash");
     }
 
@@ -116,11 +122,14 @@ public class Player : Actor
 
     }
 
-    protected override void DecreaseHP(Actor attacker, int value)
+    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
     {
-        base.DecreaseHP(attacker, value);
+        base.DecreaseHP(attacker, value, damagePos);
         PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
         playerStatePanel.SetHP(CurrentHp, MaxHp);
+
+        Vector3 damagePoint = damagePos + UnityEngine.Random.insideUnitSphere * 0.5f;
+        SystemManager.Instance.DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint, value, Color.red);
     }
 
     protected override void OnDead(Actor killer)

@@ -16,8 +16,6 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     Player player;
 
-    
-
     [SerializeField]
     EffectManager efftectManager;
 
@@ -28,6 +26,9 @@ public class SystemManager : MonoBehaviour
     BulletManager bulletManager;
 
     [SerializeField]
+    DamageManager damageManager;
+
+    [SerializeField]
     PrefabCacheSystem enemyCacheSystem = new PrefabCacheSystem();
 
     [SerializeField]
@@ -35,6 +36,19 @@ public class SystemManager : MonoBehaviour
 
     [SerializeField]
     PrefabCacheSystem effectCacheSystem = new PrefabCacheSystem();
+
+    [SerializeField]
+    PrefabCacheSystem damageCacheSystem = new PrefabCacheSystem();
+
+    public PrefabCacheSystem DamageCacheSystem
+    {
+        get { return damageCacheSystem; }
+    }
+
+    public DamageManager DamageManager
+    {
+        get { return damageManager; }
+    }
 
     public EnemyManager EnemyManager
     {
