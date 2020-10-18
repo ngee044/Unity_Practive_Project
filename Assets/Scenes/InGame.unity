@@ -259,6 +259,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &289888856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 289888857}
+  - component: {fileID: 289888858}
+  m_Layer: 0
+  m_Name: Squadron5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &289888857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289888856}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1983937727}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &289888858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289888856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac993c615350f744ae26e53fc741acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGenerateDatas:
+  - FilePath: Prefabs/Enemy
+    MaxHP: 7
+    Damage: 35
+    CrashDamage: 100
+    BulletSpeed: 10
+    FireRemainCount: 2
+    GamePoint: 5
+    GeneratePoint: {x: 15, y: 3.5, z: 0}
+    AppearPoint: {x: 0, y: 3.5, z: 0}
+    DisappearPoint: {x: -15, y: 3.5, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 5
+    Damage: 1
+    CrashDamage: 15
+    BulletSpeed: 20
+    FireRemainCount: 7
+    GamePoint: 20
+    GeneratePoint: {x: 7, y: 0, z: 0}
+    AppearPoint: {x: 9, y: 2, z: 0}
+    DisappearPoint: {x: -15, y: 2, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 3
+    Damage: 5
+    CrashDamage: 100
+    BulletSpeed: 5
+    FireRemainCount: 5
+    GamePoint: 15
+    GeneratePoint: {x: 15, y: -3.5, z: 0}
+    AppearPoint: {x: 7, y: 0, z: 0}
+    DisappearPoint: {x: 15, y: 0, z: 0}
 --- !u!1 &343177062
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,6 +405,80 @@ BoxCollider:
     type: 3}
   m_PrefabInstance: {fileID: 1016861148784097806}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &457397502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 457397503}
+  - component: {fileID: 457397504}
+  m_Layer: 0
+  m_Name: Squadron2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &457397503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457397502}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1983937727}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &457397504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457397502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac993c615350f744ae26e53fc741acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGenerateDatas:
+  - FilePath: Prefabs/Enemy
+    MaxHP: 7
+    Damage: 35
+    CrashDamage: 100
+    BulletSpeed: 10
+    FireRemainCount: 2
+    GamePoint: 5
+    GeneratePoint: {x: 15, y: 3.5, z: 0}
+    AppearPoint: {x: 0, y: 3.5, z: 0}
+    DisappearPoint: {x: -15, y: 3.5, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 5
+    Damage: 1
+    CrashDamage: 15
+    BulletSpeed: 20
+    FireRemainCount: 7
+    GamePoint: 20
+    GeneratePoint: {x: 7, y: 0, z: 0}
+    AppearPoint: {x: 9, y: 2, z: 0}
+    DisappearPoint: {x: -15, y: 2, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 3
+    Damage: 5
+    CrashDamage: 100
+    BulletSpeed: 5
+    FireRemainCount: 5
+    GamePoint: 15
+    GeneratePoint: {x: 15, y: -3.5, z: 0}
+    AppearPoint: {x: 7, y: 0, z: 0}
+    DisappearPoint: {x: 15, y: 0, z: 0}
 --- !u!1 &527681612
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1250,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922715896}
   m_CullTransparentMesh: 0
+--- !u!1 &923663237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923663239}
+  - component: {fileID: 923663238}
+  m_Layer: 0
+  m_Name: Squadron1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &923663238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923663237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac993c615350f744ae26e53fc741acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGenerateDatas:
+  - FilePath: Prefabs/Enemy
+    MaxHP: 7
+    Damage: 35
+    CrashDamage: 100
+    BulletSpeed: 10
+    FireRemainCount: 2
+    GamePoint: 5
+    GeneratePoint: {x: 15, y: 3.5, z: 0}
+    AppearPoint: {x: 0, y: 3.5, z: 0}
+    DisappearPoint: {x: -15, y: 3.5, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 5
+    Damage: 1
+    CrashDamage: 15
+    BulletSpeed: 20
+    FireRemainCount: 7
+    GamePoint: 20
+    GeneratePoint: {x: 7, y: 0, z: 0}
+    AppearPoint: {x: 9, y: 2, z: 0}
+    DisappearPoint: {x: -15, y: 2, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 3
+    Damage: 5
+    CrashDamage: 100
+    BulletSpeed: 5
+    FireRemainCount: 5
+    GamePoint: 15
+    GeneratePoint: {x: 15, y: -3.5, z: 0}
+    AppearPoint: {x: 7, y: 0, z: 0}
+    DisappearPoint: {x: 15, y: 0, z: 0}
+--- !u!4 &923663239
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923663237}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1983937727}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &934777794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,6 +1742,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1408333292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1408333293}
+  - component: {fileID: 1408333294}
+  m_Layer: 0
+  m_Name: Squadron4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1408333293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408333292}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1983937727}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1408333294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408333292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac993c615350f744ae26e53fc741acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGenerateDatas:
+  - FilePath: Prefabs/Enemy
+    MaxHP: 7
+    Damage: 35
+    CrashDamage: 100
+    BulletSpeed: 10
+    FireRemainCount: 2
+    GamePoint: 5
+    GeneratePoint: {x: 15, y: 3.5, z: 0}
+    AppearPoint: {x: 0, y: 3.5, z: 0}
+    DisappearPoint: {x: -15, y: 3.5, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 5
+    Damage: 1
+    CrashDamage: 15
+    BulletSpeed: 20
+    FireRemainCount: 7
+    GamePoint: 20
+    GeneratePoint: {x: 7, y: 0, z: 0}
+    AppearPoint: {x: 9, y: 2, z: 0}
+    DisappearPoint: {x: -15, y: 2, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 3
+    Damage: 5
+    CrashDamage: 100
+    BulletSpeed: 5
+    FireRemainCount: 5
+    GamePoint: 15
+    GeneratePoint: {x: 15, y: -3.5, z: 0}
+    AppearPoint: {x: 7, y: 0, z: 0}
+    DisappearPoint: {x: 15, y: 0, z: 0}
 --- !u!1 &1650843052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,6 +2216,139 @@ Transform:
   m_Father: {fileID: 1324538847}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1983937725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1983937727}
+  - component: {fileID: 1983937726}
+  m_Layer: 0
+  m_Name: SquadronManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1983937726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983937725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b532fbc5f74564f9dc69f3108a2a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squadronDatas:
+  - SquadronGenerateTime: 5
+    squdron: {fileID: 923663238}
+  - SquadronGenerateTime: 10
+    squdron: {fileID: 457397504}
+  - SquadronGenerateTime: 15
+    squdron: {fileID: 2033681909}
+  - SquadronGenerateTime: 20
+    squdron: {fileID: 1408333294}
+  - SquadronGenerateTime: 25
+    squdron: {fileID: 289888858}
+--- !u!4 &1983937727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983937725}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 535.5, y: 495.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 923663239}
+  - {fileID: 457397503}
+  - {fileID: 2033681908}
+  - {fileID: 1408333293}
+  - {fileID: 289888857}
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2033681907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2033681908}
+  - component: {fileID: 2033681909}
+  m_Layer: 0
+  m_Name: Squadron3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2033681908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033681907}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1983937727}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2033681909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033681907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ac993c615350f744ae26e53fc741acd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyGenerateDatas:
+  - FilePath: Prefabs/Enemy
+    MaxHP: 7
+    Damage: 35
+    CrashDamage: 100
+    BulletSpeed: 10
+    FireRemainCount: 2
+    GamePoint: 5
+    GeneratePoint: {x: 15, y: 3.5, z: 0}
+    AppearPoint: {x: 0, y: 3.5, z: 0}
+    DisappearPoint: {x: -15, y: 3.5, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 5
+    Damage: 1
+    CrashDamage: 15
+    BulletSpeed: 20
+    FireRemainCount: 7
+    GamePoint: 20
+    GeneratePoint: {x: 7, y: 0, z: 0}
+    AppearPoint: {x: 9, y: 2, z: 0}
+    DisappearPoint: {x: -15, y: 2, z: 0}
+  - FilePath: Prefabs/Enemy
+    MaxHP: 3
+    Damage: 5
+    CrashDamage: 100
+    BulletSpeed: 5
+    FireRemainCount: 5
+    GamePoint: 15
+    GeneratePoint: {x: 15, y: -3.5, z: 0}
+    AppearPoint: {x: 7, y: 0, z: 0}
+    DisappearPoint: {x: 15, y: 0, z: 0}
 --- !u!1 &2082012125
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,10 +37,12 @@ public class Enemy : Actor
     float BulletSpeed = 1;
 
     Vector3 CurrentVelocity;
+    Vector3 AppearPoint;
+    Vector3 DisappearPoint;
 
     float MoveStartTime = 0.0f;
     //float BattleStartTime = 0.0f;
-    float LastBattleUpdateTime = 0.0f;
+    float LastActionUpdateTime = 0.0f;
 
     [SerializeField]
     int FireRemainCount = 3;
@@ -75,7 +77,9 @@ public class Enemy : Actor
         switch(CurrentState)
         {
             case State.None:
+                break;
             case State.Ready:
+                UpdateReady();
                 break;
             case State.Dead:
                 break;
@@ -95,7 +99,7 @@ public class Enemy : Actor
 
     private void UpdateBattle()
     {
-        if(Time.time - LastBattleUpdateTime > Mathf.Abs(3.0f))
+        if(Time.time - LastActionUpdateTime > Mathf.Abs(3.0f))
         {
             if (FireRemainCount > 0)
             {
@@ -104,10 +108,34 @@ public class Enemy : Actor
             }
             else
             {
-                Disappear(new Vector3(-15.0f, transform.position.y, transform.position.z));
+                Disappear(DisappearPoint);
             }
 
-            LastBattleUpdateTime = Time.time;
+            LastActionUpdateTime = Time.time;
+        }
+    }
+
+    public void Reset(EnemyGenerateData data)
+    {
+        CurrentHp = MaxHp = data.MaxHP;
+        Damage = data.Damage;
+        crashDamage = data.CrashDamage;
+        BulletSpeed = data.BulletSpeed;
+        FireRemainCount = data.FireRemainCount;
+        GamePoint = data.GamePoint;
+
+        AppearPoint = data.AppearPoint;
+        DisappearPoint = data.DisappearPoint;
+
+        CurrentState = State.Ready;
+        LastActionUpdateTime = Time.time;
+    }
+
+    void UpdateReady()
+    {
+        if (Time.time - LastActionUpdateTime > 1.0f)
+        {
+            Appear(AppearPoint);
         }
     }
 
@@ -136,7 +164,7 @@ public class Enemy : Actor
         if(CurrentState == State.Appear)
         {
             CurrentState = State.Battle;
-            LastBattleUpdateTime = Time.time;
+            LastActionUpdateTime = Time.time;
         }
         else //if (CurrentState == State.Disappear)
         {
@@ -150,7 +178,7 @@ public class Enemy : Actor
         TargetPosition = targetPose;
         CurrentSpeed = MaxSpeed;
 
-        LastBattleUpdateTime = Time.time;
+        LastActionUpdateTime = Time.time;
 
         CurrentState = State.Appear;
         MoveStartTime = Time.time;

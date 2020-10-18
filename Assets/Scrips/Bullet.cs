@@ -94,10 +94,11 @@ public class Bullet : MonoBehaviour
         }
 
         Actor actor = collider.GetComponentInParent<Actor>();
-        if (actor.IsDead && actor)
+        if (actor.IsDead && actor || actor == Owner)
             return;
 
         actor.OnBulletHited(Owner, Damage, this.transform.position);
+
         Collider myCollider = GetComponentInChildren<Collider>();
         myCollider.enabled = false;
 
