@@ -1,0 +1,176 @@
+스크립트 실행 순서
+(오브젝트 사이클)
+
+다음 순으로 메서드 호출이 일어남
+
+Awake() -> (OnEnable()) ->Start() -> FixedUpdate() -> Update() -> LateUpdate() -> (OnDisable()) -> OnDestroy()
+
+FixedUpdate: 초당/30회 호출 (ex이동 키입력)
+Update: 초당 60회 호출(ex단발적 키입력을 주로)
+
+OnEnable: Enable 될때 한번 호출
+OnDisable: Disable 될때 한번 호출
+
+Input 클래스 (키보드 마우스 입력)
+
+bool anyKeyDown 아무 키를 누를때 호출
+bool anyKey 아무 키를 누를고 있을때
+bool GetKeyUp(KeyCode index) 키를 누르고 땔때
+bool GetKeyDown(KeyCode index) 눌렀을때
+bool GetKey 누르고(KeyCode index) 있을때
+
+InputManager에 설정된 키 값을 호출
+(InputManager라는 ProjectSetting탭에 존재한다. )
+bool GetButtonDown(string input_str) 눌렀을때
+bool GetButton(string input_str) 누르는 중
+bool GetButtonUp(string input_str) 땔때
+
+(횡이동 리턴 값 flaot) 
+flaot GetAxis(KeyCode index) //미세한 조절 및 반응
+flaot GetAxis(string key_name)
+( Horizontal 종이동 (X축), Vertical 횡이동 (Y축) )
+
+(횡, 종 이동)
+int GetAxisRaw(KeyCode index) //큰 반응
+fint GetAxisRaw(string key_name)
+
+type 0(왼쪽), 1(오른쪽)
+bool GetMouseButtonDown(int type) 클릭
+bool GetMouseDown(int type) 마우스 클릭 중
+bool GetMouseButtonUp(int type) 땔때
+
+Transform 클래스
+GameObject를 상속받고 있다
+
+해당 위치에 오브젝트 vec만큼 이동 (
+.Translate(Vector2 vec2);
+.Translate(Vector3 vec3);
+현재 위치에서 벡터만큼 이동
+.postion 현재 위치 set get (Vector3)
+.Rotate 현재 회전시키는 함수(
+
+//해당 위치 이동(단순 이동)
+Vector3.MoveTowards(Vector3 curr_pos, Vector3 target_pos, speed)
+
+미끄러지듯 이동(velo는 보통 zero)
+Vector velo = Vector3.zero
+Vector3.SmoothDamp((Vector3 curr_pos, Vector3 target_pos, ref velo, flaot 0.1f)
+
+선형 보간 이동
+Vector3.Lerp(Vector3 curr_pos, Vector3 target_pos, float value)
+
+포물선 보간 이동
+Vector3.Slerp(Vector3 curr_pos, Vector3 target_pos, float value)
+
+프레임드랍으로 결과가 바뀌는 것을 방지할 수 있는 델타 타임
+Time.deletaTime 일반적으로 value에 곱해준다
+ex)
+Vector3.Slerp(Vector3 curr_pos, Vector3 target_pos, float value * Time.deletaTime)
+
+
+# 중력 적용하기
+-Rigidbody: 물리효과를 받기 위한 컴포넌트
+mass: 무게
+Is Kinematic : 외부 물리 차단(스크립트를 통한 물리(이동)처리를 하겠다)
+외부에서의 물리처리에 대해 해당 오브젝트는 적용 유무를 체크
+UseGravity: 중력 사용 유 무
+velocity : 속도 (.x, .y)
+velocity.normalized = 단위벡터 (.x, .y)
+Linear Drag : 공기 저항(일반적으로 1~2 설정)
+
+-Collider: 충돌 처리
+
+-Material: 재질
+metalic: 철효과
+smoothness : 빛반사 조절
+texture: 재질에 넣는 이미지
+
+Physic Material 탄성과 마찰을 다루는 물리적인 재질 assets에 create 메뉴로 생성
+Sphere Collider에 material에 들어감.
+-Bounciness: 탄력성, 탄성 (튀어오르는 정도)
+-Bounciness Combine: 다음 탄성을 계산하는 방식
+-Friction: 마찰력
+-dynimic Friction: 마찰계수(움직일때의 마찰)
+
+#스크립트에 컴포넌트를 가져오는 방법 및 함수
+Class RigidBody
+code)
+public RigidBody rigid;
+rigid = GetComponent<RigidBody>();
+rigid.velocity = Vector3.right; (velocity 속도)
+rigid.AddForce(Vector3& vlaue, ForceMode& type) 보통 점프를 구현할때 쓰는 함수 속도와 방향으로 힘(속력) 주는 함수(무게에 따라 결과 달라짐) 계속 호출하면 계속해서 값이 누적되서 증대됨 주의가 필요
+rigid.AddTorque(Vector3& value): 힘(토큰)(회전력)(y축을 기준으로 돔 y만 1주면 단위벡터라 제자리에서 돔)
+
+MeshRenderer mesh;
+Material mat;
+mesh = GetComponent<MeshRenderer>() ;
+mat = mesh.material;
+onCollisionEnter(Collision collision) 충돌 시작 
+{ if(collision.gameobject.tag == "MyPlayer") mat.color = new Color(0,0,0); }
+onCollisionStay(Collision collision) 충돌 중
+onCollisionExit(Collision collision) 충돌 끝 각각 호출
+
+onTriggerStay(Collider other)  //물리적인 충돌이 아니라 콜라이더 충돌 Trigger형식의 함수, 
+{if(other.name = "Cube") Debug.log("onTrigger")}
+{if(other.tag = "Cube") Debug.log("onTrigger")}
+onTriggerEnter(Collider other)
+onTriggerExit(Collider other)
+
+UI
+-Image
+Image Type 바꿔보면서 해보기
+-Filles에서 Filles Methos에서 체력바, 스킬 재사용 표시 등 표현할수있음
+Preserve Aspect 비율
+
+Sound
+AudioSource Component를 사용해서 사운드를 재생한다.
+AudioClip 오디오 소스
+ex src)
+AudioSource audio;
+void Awake()
+{
+   audio =GetComponent<AudioSource>();
+}
+
+void function()
+{
+   audio.Play();
+}
+
+Sprite 
+
+Sprite Mode에서 멀티플(multiple)선택
+Sprite Editer에 들어가서 type에서 slice를 선택하여 리소스 이미지를 자를수 있음(기본적으로 오토매틱으로 자름)
+
+SpriteRenderer
+SpriteRenderer.flipX : Sprite 방향을 바꿈
+
+Platform(물리적 재질(땅)에 대한 마찰 계수 Component)
+Mathf 클래스에서 수학관련 static 함수를 지원함(유니티에서 지원하는거임)
+RaycastHit2D rayHit =  Physics2D.Raycast(RigidBody position, Vector3 방향, float distance)
+(마우스 레이 캐스팅)
+
+if(rayhit.collider != null)
+{
+	log(rayHit.collider.name);
+	(마우스 레이에 맞으면... 이름 반환)
+}
+
+
+SceneManager 사용 시 주의
+Scene 전환 시
+
+기존 Scene을 메모리에서 Unload하지 않은 채 새로운 Scene을 로드 한 뒤에 언로드
+하기 때문에 부하가 심하다(이때 메모리가 터지기도 함)
+
+그래서 empty Scene을 로드하고 그 후에 새로운 Scene을 로드하여 부하를 줄인다.
+*이러한 방법이 있는데 현재 19버전에서는 어떤지 정확하게 유니티회사에 물어본게
+아니라 모르지만 현재는 Unload 이후에 새로운 Scene을 로드하는 것으로 보임
+
+
+
+
+
+
+
+
