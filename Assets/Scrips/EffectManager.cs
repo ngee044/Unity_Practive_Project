@@ -33,7 +33,7 @@ public class EffectManager : MonoBehaviour
         }
 
         string filePath = effectPrefabFiles[index].filePath;
-        GameObject go = SystemManager.Instance.EffectCacheSystem.Archive(filePath);
+        GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectCacheSystem.Archive(filePath);
         go.transform.position = position;
 
         AutoCachableEffect effect = go.GetComponent<AutoCachableEffect>();
@@ -70,13 +70,13 @@ public class EffectManager : MonoBehaviour
         for (int i = 0; i < effectPrefabFiles.Length; ++i)
         {
             GameObject go = Load(effectPrefabFiles[i].filePath);
-            SystemManager.Instance.EffectCacheSystem.GenerateCache(effectPrefabFiles[i].filePath, go, effectPrefabFiles[i].cacheCount);
+            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectCacheSystem.GenerateCache(effectPrefabFiles[i].filePath, go, effectPrefabFiles[i].cacheCount);
         }
     }
 
     public bool RemoveEffect(AutoCachableEffect effect)
     {
-        SystemManager.Instance.EffectCacheSystem.Restore(effect.FilePath, effect.gameObject);
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EffectCacheSystem.Restore(effect.FilePath, effect.gameObject);
         return true;
     }
 }

@@ -117,7 +117,7 @@ public class Player : Actor
         Bullet bullet = go.GetComponent<Bullet>();
         //Debug.Log(FireTransform.position);
 #endif
-        Bullet bullet = SystemManager.Instance.BulletManager.Generate(BulletManager.PlayerBulletIndex);
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
         bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
 
     }
@@ -129,13 +129,13 @@ public class Player : Actor
         playerStatePanel.SetHP(CurrentHp, MaxHp);
 
         Vector3 damagePoint = damagePos + UnityEngine.Random.insideUnitSphere * 0.5f;
-        SystemManager.Instance.DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint, value, Color.red);
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint, value, Color.red);
     }
 
     protected override void OnDead(Actor killer)
     {
         base.OnDead(killer);
-        SystemManager.Instance.GamePointAccumulator.Reset();
+        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().GamePointAccumulator.Reset();
         Debug.Log("Game Over");
         gameObject.SetActive(false);
     }

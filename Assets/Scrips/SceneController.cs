@@ -91,10 +91,15 @@ public class SceneController : MonoBehaviour
     public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
     {
         Debug.Log("OnActiveSceneChanaged is called! scene 0 = " + scene.name + ", scene1 = " + loadSceneMode.ToString());
+        BaseSceneMain baseSceneMain = GameObject.FindObjectOfType<BaseSceneMain>();
+        Debug.Log("OnSceneLoaded ! basesSceneMain.name = " + baseSceneMain.name);
+        SystemManager.Instance.CurrentSceneMain = baseSceneMain;
+
     }
 
     public void OnSceneUnloaded(Scene scene)
     {
         Debug.Log("OnActiveSceneChanaged is called! scene 0 = " + scene.name);
     }
+
 }
