@@ -23,7 +23,7 @@ public class InputController : MonoBehaviour
         UpdateMouse();
     }
 
-    void UpdateInput()
+    public void UpdateInput()
     {
         Vector3 moveDirection = Vector3.zero;
 
@@ -50,7 +50,7 @@ public class InputController : MonoBehaviour
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero.ProcessInput(moveDirection);
     }
 
-    void UpdateMouse()
+    public void UpdateMouse()
     {
         if(Input.GetMouseButtonDown(0))
         {

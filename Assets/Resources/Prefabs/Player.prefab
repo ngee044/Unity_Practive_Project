@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b053c0bcb347c14685dbd82f3c25338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHp: 100
+  MaxHp: 300
   CurrentHp: 0
-  Damage: 1
+  Damage: 30
   crashDamage: 100
   isDead: 0
   moveVector: {x: 0, y: 0, z: 0}

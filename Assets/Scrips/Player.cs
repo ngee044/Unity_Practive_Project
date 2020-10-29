@@ -26,6 +26,8 @@ public class Player : Actor
     [SerializeField]
     float BulletSpeed = 1;
 
+    InputController inputController = new InputController();
+
     // Start is called before the first frame update
     protected override void Initialize()
     {
@@ -39,20 +41,50 @@ public class Player : Actor
             SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero = this;
     }
 
-    // Update is called once per frame
-    protected override void UpdateActor()
+    [ClientCallback]
+    public void UpdateInput()
     {
-        base.UpdateActor();
+        inputController.UpdateInput();
+        inputController.UpdateMouse();
+    }
+
+    public void UpdateMove()
+    {
         if (moveVector.sqrMagnitude == 0)
         {
             return;
         }
 
-        moveVector = AdjustMoveVetor(moveVector);
-
-        //UpdateMove();
-        CmdMove(moveVector);
+        if (isServer)
+        {
+            RpcMove(moveVector);
+        }
+        else
+        {
+            CmdMove(moveVector);
+            if (isLocalPlayer)
+                transform.position += AdjustMoveVetor(moveVector);
+        }
     }
+
+
+    // Update is called once per frame
+    protected override void UpdateActor()
+    {
+        base.UpdateActor();
+        UpdateInput();
+        UpdateMove();
+    }
+
+    [ClientRpc]
+    public void RpcMove(Vector3 mv)
+    {
+        this.moveVector = mv;
+        transform.position += AdjustMoveVetor(this.moveVector);
+        base.SetDirtyBit(1);
+        this.moveVector = Vector3.zero;
+    }
+
 
     [Command]
     public void CmdMove(Vector3 moveVector)
@@ -60,11 +92,6 @@ public class Player : Actor
         this.moveVector = moveVector;
         transform.position += moveVector;
         base.SetDirtyBit(1);
-    }
-
-    void UpdateMove()
-    {
-        transform.position += moveVector;
     }
 
     public void ProcessInput(Vector3 moveDirection)

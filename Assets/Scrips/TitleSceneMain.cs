@@ -6,8 +6,11 @@ public class TitleSceneMain : BaseSceneMain
 {
     public void OnSartButton()
     {
-        Debug.Log("clicked button");
-        SceneController.Instance.LoadScene(SceneNameConstants.LoadingScene);
+        PanelManager.GetPanel(typeof(NetworkConfigPanel)).Show();
     }
 
+    public void GotoNextScene()
+    {
+        SceneController.Instance.LoadScene(SceneNameConstants.LoadingScene);
+    }
 }
