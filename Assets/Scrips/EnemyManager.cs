@@ -34,6 +34,9 @@ public class EnemyManager : MonoBehaviour
 
     public bool GenerateEnemy(SquadronMemberStruct data)
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return true;
+
         string FilePath = SystemManager.Instance.EnemyTable.GetEnemy(data.EnemyID).FilePath;
         GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.Archive(FilePath);
         go.transform.position = new Vector3(data.GeneratePointX, data.GeneratePointY, 0);
@@ -49,7 +52,10 @@ public class EnemyManager : MonoBehaviour
 
     public bool RemoveEnemy(Enemy enemy)
     {
-        if(v_enemy.Contains(enemy) == false)
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return true;
+
+        if (v_enemy.Contains(enemy) == false)
         {
             Debug.LogError("No exist Enemy");
             return false;
@@ -62,10 +68,13 @@ public class EnemyManager : MonoBehaviour
 
     public void Prepare()
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return;
+
         for (int i = 0; i < enemyFiles.Length; i++)
         {
             GameObject go = enemyFactory.Load(enemyFiles[i].filePath);
-            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.GenerateCache(enemyFiles[i].filePath, go, enemyFiles[i].cacheCount);
+            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyCacheSystem.GenerateCache(enemyFiles[i].filePath, go, enemyFiles[i].cacheCount, this.transform);
         }
     }
 

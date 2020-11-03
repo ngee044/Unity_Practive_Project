@@ -13,21 +13,15 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().CurrentGameState != InGameSceneMain.GameState.Running)
-        {
-            Debug.Log("0000000000000");
-            return;
-        }
-
         UpdateInput();
-        UpdateMouse();
     }
 
-    public void UpdateInput()
+    public void UpdateKeyboard()
     {
+
         Vector3 moveDirection = Vector3.zero;
 
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             moveDirection.y = 1;
         }
@@ -48,6 +42,18 @@ public class InputController : MonoBehaviour
         }
 
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero.ProcessInput(moveDirection);
+    }
+
+    public void UpdateInput()
+    {
+        if (SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().CurrentGameState != GameState.Running)
+        {
+            return;
+        }
+
+        UpdateKeyboard();
+        UpdateMouse();
+
     }
 
     public void UpdateMouse()

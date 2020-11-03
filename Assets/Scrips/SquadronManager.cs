@@ -6,7 +6,7 @@ public class SquadronManager : MonoBehaviour
 {
     float GameStartedTime;
 
-    int SquadronIndex;
+    int ScheduleIndex;
 
     [SerializeField]
     SquadronTable[] squadronDatas;
@@ -15,12 +15,12 @@ public class SquadronManager : MonoBehaviour
     SquadronScheduleTable squadronScheduleTable;
 
     bool running = false;
-    // Start is called before the first frame update
 
+    // Start is called before the first frame update
     void Start()
     {
         squadronDatas = GetComponentsInChildren<SquadronTable>();
-        for(int i = 0; i < squadronDatas.Length; i++)
+        for (int i = 0; i < squadronDatas.Length; i++)
             squadronDatas[i].Load();
 
         squadronScheduleTable.Load();
@@ -41,7 +41,7 @@ public class SquadronManager : MonoBehaviour
     {
 
         GameStartedTime = Time.time;
-        SquadronIndex = 0;
+        ScheduleIndex = 0;
         running = true;
         Debug.Log("Game Started!");
     }
@@ -51,12 +51,14 @@ public class SquadronManager : MonoBehaviour
         if (!running)
             return;
 
-        if(Time.time - GameStartedTime >= squadronScheduleTable.GetScheduleData(SquadronIndex).GenerateTime)
-        {
-            GenerateSquadron(squadronDatas[SquadronIndex]);
-            SquadronIndex++;
+        SquadronScheduleDataStruct data = squadronScheduleTable.GetScheduleData(ScheduleIndex);
 
-            if (SquadronIndex >= squadronDatas.Length)
+        if (Time.time - GameStartedTime >= data.GenerateTime)
+        {
+            GenerateSquadron(squadronDatas[data.SquadronID]);
+            ScheduleIndex++;
+
+            if (ScheduleIndex >= squadronScheduleTable.GetDataCount())
             {
                 AllSquadronGenerated();
                 return;
@@ -66,9 +68,9 @@ public class SquadronManager : MonoBehaviour
 
     void GenerateSquadron(SquadronTable table)
     {
-        Debug.Log("GenerateSquadron");
+        Debug.Log("GenerateSquadron : " + ScheduleIndex);
 
-        for(int i = 0; i < table.GetCount(); i++)
+        for (int i = 0; i < table.GetCount(); i++)
         {
             SquadronMemberStruct squadronMember = table.GetSquadronMember(i);
             SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().EnemyManager.GenerateEnemy(squadronMember);

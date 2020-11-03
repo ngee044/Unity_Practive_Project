@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +6,8 @@ using UnityEngine.Networking;
 
 public class Player : Actor
 {
+    const string PlayerHUDPath = "Prefabs/PlayerHUD";
+
     [SerializeField]
     [SyncVar]
     Vector3 moveVector = Vector3.zero;
@@ -28,24 +29,76 @@ public class Player : Actor
 
     InputController inputController = new InputController();
 
+    [SerializeField]
+    [SyncVar]
+    bool Host = false;  // Host 플레이어인지 여부
+
+    [SerializeField]
+    Material ClientPlayerMaterial;
+
+    [SerializeField]
+    [SyncVar]
+    int UsableItemCount = 0;
+
+    public int ItemCount
+    {
+        get
+        {
+            return UsableItemCount;
+        }
+    }
+
     // Start is called before the first frame update
     protected override void Initialize()
     {
         base.Initialize();
-        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
-        playerStatePanel.SetHP(CurrentHp, MaxHp);
-        if (Speed == 0)
-            Speed = 0.5f;
+
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
 
         if (isLocalPlayer)
-            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero = this;
+        {
+            inGameSceneMain.Hero = this;
+        }
+
+        if (isServer && isLocalPlayer)
+        {
+            Host = true;
+            RpcSetHost();
+        }
+
+        Transform startTransform;
+        if (Host)
+        {
+            startTransform = inGameSceneMain.PlayerStartTransform1;
+        }
+        else
+        {
+            startTransform = inGameSceneMain.PlayerStartTransform2;
+            MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
+            meshRenderer.material = ClientPlayerMaterial;
+        }
+
+        SetPosition(startTransform.position);
+
+        if (actorInstanceID != 0)
+            inGameSceneMain.ActorManager.Regist(actorInstanceID, this);
+
+        InitializePlayerHUD();
+    }
+
+    void InitializePlayerHUD()
+    {
+        InGameSceneMain inGameSceneMain = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>();
+        GameObject go = Resources.Load<GameObject>(PlayerHUDPath);
+        GameObject goInstance = Instantiate<GameObject>(go, inGameSceneMain.DamageManager.CanvasTransform);
+        PlayerHUD playerHUD = goInstance.GetComponent<PlayerHUD>();
+        playerHUD.Initialize(this);
     }
 
     [ClientCallback]
     public void UpdateInput()
     {
         inputController.UpdateInput();
-        inputController.UpdateMouse();
     }
 
     public void UpdateMove()
@@ -63,14 +116,31 @@ public class Player : Actor
         {
             CmdMove(moveVector);
             if (isLocalPlayer)
+            {
                 transform.position += AdjustMoveVetor(moveVector);
+            }
         }
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log("OnStartClient");
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+        Debug.Log("OnStartLocalPlayer");
     }
 
 
     // Update is called once per frame
     protected override void UpdateActor()
     {
+        if (!isLocalPlayer)
+            return;
+
         base.UpdateActor();
         UpdateInput();
         UpdateMove();
@@ -87,15 +157,19 @@ public class Player : Actor
 
 
     [Command]
-    public void CmdMove(Vector3 moveVector)
+    public void CmdMove(Vector3 mv)
     {
-        this.moveVector = moveVector;
-        transform.position += moveVector;
+        this.moveVector = mv;
+        transform.position += mv;
         base.SetDirtyBit(1);
+        this.moveVector = Vector3.zero;
     }
 
     public void ProcessInput(Vector3 moveDirection)
     {
+        if (!isLocalPlayer)
+            return;
+
         moveVector = moveDirection * Speed * Time.deltaTime;
     }
 
@@ -141,44 +215,133 @@ public class Player : Actor
                 Vector3 crashPos = enemy.transform.position + box.center;
                 crashPos.x += box.size.x * 0.5f;
 
-                enemy.OnCrash(this, crashDamage, crashPos);
+                enemy.OnCrash(crashDamage, crashPos);
             }
         }
     }
 
-    public override void OnCrash(Actor enermy, int damage, Vector3 crashPos)
-    {
-        base.OnCrash(enermy, damage, crashPos);
-        Debug.Log("player to enermy OnCrash");
-    }
-
     public void Fire()
     {
-#if false
-        GameObject go = Instantiate(Bullet);
-        Bullet bullet = go.GetComponent<Bullet>();
-        //Debug.Log(FireTransform.position);
-#endif
-        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
-        bullet.Fire(this, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
-
+        if (Host)
+        {
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
+            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
+        else
+        {
+            CmdFire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
     }
 
-    protected override void DecreaseHP(Actor attacker, int value, Vector3 damagePos)
+    public void FireBomb()
     {
-        base.DecreaseHP(attacker, value, damagePos);
-        PlayerStatePanel playerStatePanel = PanelManager.GetPanel(typeof(PlayerStatePanel)) as PlayerStatePanel;
-        playerStatePanel.SetHP(CurrentHp, MaxHp);
+        if (UsableItemCount <= 0)
+            return;
 
-        Vector3 damagePoint = damagePos + UnityEngine.Random.insideUnitSphere * 0.5f;
+        if (Host)
+        {
+            Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
+            bullet.Fire(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
+        else
+        {
+            CmdFireBomb(actorInstanceID, FireTransform.position, FireTransform.right, BulletSpeed, Damage);
+        }
+        DecreaseUsableItemCount();
+    }
+
+    [Command]
+    public void CmdFire(int ownerInstanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBulletIndex);
+        bullet.Fire(ownerInstanceID, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
+    }
+
+    protected override void DecreaseHP(int value, Vector3 damagePos)
+    {
+        base.DecreaseHP(value, damagePos);
+
+        Vector3 damagePoint = damagePos + Random.insideUnitSphere * 0.5f;
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().DamageManager.Generate(DamageManager.PlayerDamageIndex, damagePoint, value, Color.red);
     }
 
-    protected override void OnDead(Actor killer)
+    protected override void OnDead()
     {
-        base.OnDead(killer);
-        SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().GamePointAccumulator.Reset();
-        Debug.Log("Game Over");
+        base.OnDead();
         gameObject.SetActive(false);
+    }
+
+    [ClientRpc]
+    public void RpcSetHost()
+    {
+        Host = true;
+        base.SetDirtyBit(1);
+    }
+
+    [Command]
+    public void CmdFireBomb(int ownerInstanceID, Vector3 firePosition, Vector3 direction, float speed, int damage)
+    {
+        Bullet bullet = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletManager.Generate(BulletManager.PlayerBombIndex);
+        bullet.Fire(ownerInstanceID, firePosition, direction, speed, damage);
+        base.SetDirtyBit(1);
+    }
+
+    void DecreaseUsableItemCount()
+    {
+        // 정상적으로 NetworkBehaviour 인스턴스의 Update로 호출되어 실행되고 있을때
+        //CmdDecreaseUsableItemCount();
+
+        // MonoBehaviour 인스턴스의 Update로 호출되어 실행되고 있을때의 꼼수
+        if (isServer)
+        {
+            RpcDecreaseUsableItemCount();        // Host 플레이어인경우 RPC로 보내고
+        }
+        else
+        {
+            CmdDecreaseUsableItemCount();        // Client 플레이어인경우 Cmd로 호스트로 보낸후 자신을 Self 동작
+            if (isLocalPlayer)
+                UsableItemCount--;
+        }
+    }
+
+    protected virtual void InternalIncreaseHP(int value)
+    {
+        if (isDead)
+            return;
+
+        CurrentHP += value;
+
+        if (CurrentHP > MaxHP)
+            CurrentHP = MaxHP;
+    }
+
+    public virtual void IncreaseHP(int value)
+    {
+        if (isDead)
+            return;
+
+        CmdIncreaseHP(value);
+    }
+
+    [Command]
+    public void CmdIncreaseHP(int value)
+    {
+        InternalIncreaseHP(value);
+        base.SetDirtyBit(1);
+    }
+
+    [Command]
+    public void CmdDecreaseUsableItemCount()
+    {
+        UsableItemCount--;
+        base.SetDirtyBit(1);
+    }
+
+    [ClientRpc]
+    public void RpcDecreaseUsableItemCount()
+    {
+        UsableItemCount--;
+        base.SetDirtyBit(1);
     }
 }

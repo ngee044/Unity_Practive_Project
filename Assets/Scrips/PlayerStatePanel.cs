@@ -10,7 +10,25 @@ public class PlayerStatePanel : BasePanel
 
     [SerializeField]
     Gage HPGage;
-    
+
+    Player hero = null;
+
+    Player Hero
+    {
+        get
+        {
+            if (hero == null)
+                hero = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().Hero;
+            return hero;
+        }
+    }
+
+    public override void InitializePanel()
+    {
+        base.InitializePanel();
+        HPGage.SetHP(100, 100); // 가득찬 상태로 초기화
+    }
+
     public void SetScore(int value)
     {
         Debug.Log("SetScore value = " + value);
@@ -18,9 +36,14 @@ public class PlayerStatePanel : BasePanel
         scoreValue.text = value.ToString();
     }
 
-    public void SetHP(float currentValue, float maxValue)
+    public override void UpdatePanel()
     {
-        HPGage.SetHP(currentValue, maxValue);
+        base.UpdatePanel();
+        if (Hero != null)
+        {
+            HPGage.SetHP(Hero.HPCurrent, Hero.HPMax);
+        }
+
     }
 
 }

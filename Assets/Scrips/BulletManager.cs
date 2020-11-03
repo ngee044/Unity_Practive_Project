@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletManager : MonoBehaviour
 {
     public const int PlayerBulletIndex = 0;
+    public const int PlayerBombIndex = 0;
     public const int EnemyBulletIndex = 1;
 
     [SerializeField]
@@ -16,7 +17,7 @@ public class BulletManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Prepare();
+        //Prepare();
     }
 
     // Update is called once per frame
@@ -51,27 +52,35 @@ public class BulletManager : MonoBehaviour
 
     public void Prepare()
     {
-        for(int i = 0; i < BulletFiles.Length; i++)
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return;
+
+        for (int i = 0; i < BulletFiles.Length; i++)
         {
             GameObject go = Load(BulletFiles[i].filePath);
-            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletCacheSystem.GenerateCache(BulletFiles[i].filePath, go, BulletFiles[i].cacheCount);
+            SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletCacheSystem.GenerateCache(BulletFiles[i].filePath, go, BulletFiles[i].cacheCount, this.transform);
         }
-        
     }
 
     public Bullet Generate(int index)
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return null;
+
         string path = BulletFiles[index].filePath;
         GameObject go = SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletCacheSystem.Archive(path);
 
         Bullet bullet = go.GetComponent<Bullet>();
-        bullet.FilePath = path;
+        //bullet.FilePath = path;
 
         return bullet;
     }
 
     public bool Remove(Bullet bullet)
     {
+        if (!((FWNetworkManager)FWNetworkManager.singleton).isServer)
+            return true;
+
         SystemManager.Instance.GetCurrentSceneMain<InGameSceneMain>().BulletCacheSystem.Restore(bullet.FilePath, bullet.gameObject);
         return true;
     }

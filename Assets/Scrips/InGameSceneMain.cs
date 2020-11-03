@@ -1,24 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class InGameSceneMain : BaseSceneMain
 {
-    const float GameReadyIntaval = 3.0f;
-
-    public enum GameState : int
-    {
-        Ready = 0,
-        Running,
-        End,
-    }
-
-    GameState currentGameState = GameState.Ready;
     public GameState CurrentGameState
     {
         get
         {
-            return currentGameState;
+            return NetworkTransfer.CurrentGameState;
         }
     }
 
@@ -31,7 +22,7 @@ public class InGameSceneMain : BaseSceneMain
         {
             if (!player)
             {
-                Debug.LogError("Main Player is not setted!");
+                Debug.LogWarning("Main Player is not setted!");
             }
 
             return player;
@@ -141,9 +132,6 @@ public class InGameSceneMain : BaseSceneMain
         }
     }
 
-
-    float SceneStartTime;
-
     [SerializeField]
     Transform mainBGQuadTransform;
 
@@ -155,25 +143,48 @@ public class InGameSceneMain : BaseSceneMain
         }
     }
 
-    protected override void OnStart()
+    [SerializeField]
+    InGameNetworkTransfer inGameNetworkTransfer;
+
+    InGameNetworkTransfer NetworkTransfer
     {
-        SceneStartTime = Time.time;
+        get { return inGameNetworkTransfer; }
     }
-    protected override void UpdateScene()
+
+    [SerializeField]
+    Transform playerStartTransform1;
+
+    public Transform PlayerStartTransform1
     {
-        base.UpdateScene();
-
-        float currentTime = Time.time;
-
-        if (currentGameState == GameState.Ready)
+        get
         {
-            if (currentTime - SceneStartTime > GameReadyIntaval)
-            {
-                SquadronManager.StartGame();
-                currentGameState = GameState.Running;
-            }
+            return playerStartTransform1;
         }
     }
 
+    [SerializeField]
+    Transform playerStartTransform2;
+    public Transform PlayerStartTransform2
+    {
+        get
+        {
+            return playerStartTransform2;
+        }
+    }
+
+    ActorManager actorManager = new ActorManager();
+
+    public ActorManager ActorManager
+    {
+        get
+        {
+            return actorManager;
+        }
+    }
+
+    public void GameStart()
+    {
+        NetworkTransfer.RpcGameStart();
+    }
 
 }
